@@ -1,7 +1,7 @@
 # Ultimate Tic Tac Toe
 
 This is a school project.
-Here is an implementation of the teasing game, in Python, and a solver using the A\* alogorithm.
+Here is an implementation of the Tic Tac Toe game, in Python, and a solver using the Minimax alogorithm and Alpha–beta pruning.
 
 ## Installation
 
@@ -28,9 +28,6 @@ pip install -r requirements.txt
 Run this program :
 
 ```
-.venv/bin/uvicorn main:app --reload
+.venv/bin/python3 ./main.py
 ```
-
-This will start an API to use the Web Iser Interface. You can then open the file `index.html` and try the application !
-
 ⚠️ Be careful ! Your Python version may not the same as my version ! ⚠️
