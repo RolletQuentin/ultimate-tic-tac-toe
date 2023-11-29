@@ -4,8 +4,8 @@ import math
 
 class Solver():
 
-    def __init__(self):
-        self.algorithm = "minimax"
+    def __init__(self, algorithm="minimax"):
+        self.algorithm = algorithm
 
     def geometry(self, node: Node) -> int:
         # the winner earn 10 points
@@ -30,6 +30,12 @@ class Solver():
                     tmp.play((i, j), next_player)
                     node.children.append(Node(tmp, node, (i, j)))
 
+    def minimax_algorithms(self, node: Node, depth: int, eval_max: bool) -> int:
+        if self.algorithm == "minimax":
+            self.minimax(node, depth, eval_max)
+        if self.algorithm == "minimax_alpha_beta":
+            self.minimax_alpha_beta(node, depth, -math.inf, math.inf, eval_max)
+
     def minimax(self, node: Node, depth: int, evalMax: bool) -> int:
         if depth == 0 or node.game.win() or node.game.draw():
             return self.geometry(node)
@@ -45,3 +51,26 @@ class Solver():
                     value = min(value, self.minimax(child, depth-1, True))
 
         return value
+
+    def minimax_alpha_beta(self, node: Node, depth: int, alpha: float, beta: float, eval_max: bool) -> int:
+        if depth == 0 or node.game.win() or node.game.draw():
+            return self.geometry(node)
+
+        if eval_max:
+            value = -math.inf
+            for child in node.children:
+                value = max(value, self.minimax_alpha_beta(
+                    child, depth-1, alpha, beta, False))
+                alpha = max(alpha, value)
+                if beta <= alpha:
+                    break
+            return value
+        else:
+            value = math.inf
+            for child in node.children:
+                value = min(value, self.minimax_alpha_beta(
+                    child, depth-1, alpha, beta, True))
+                beta = min(beta, value)
+                if beta <= alpha:
+                    break
+            return value

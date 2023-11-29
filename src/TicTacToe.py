@@ -208,7 +208,7 @@ class TicTacToe():
             return self.get_player_move()
 
     def get_ai_move(self):
-        ai = Solver()
+        ai = Solver("minimax_alpha_beta")
         root = Node(self, None, None)
 
         # generate the game tree
