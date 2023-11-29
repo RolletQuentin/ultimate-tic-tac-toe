@@ -24,9 +24,18 @@ class TicTacToe():
 
         play(position, player): Makes a move on the board at the specified position for the given player.
 
-        win(): Checks for a winner on the current board. Returns the player number (0 or 1) if there is a winner, otherwise returns -1.
+        win(): Checks for a winner on the current board. Returns the player number (-1 or 1) if there is a winner, otherwise returns 0.
 
         draw(): Checks if the game is a draw. Returns True if the board is full and there is no winner, otherwise returns False.
+
+        copy(): Creates a copy of the current TicTacToe object.
+
+        play_with_ai(): Allows a player to play against the AI. Alternates turns until the game is over (win or draw).
+
+        get_player_move(): Takes input from the player to get their move coordinates.
+
+        get_ai_move(): Generates the AI's move using the minimax algorithm with alpha-beta pruning.
+
     """
 
     def __init__(self, board=None):
@@ -75,6 +84,15 @@ class TicTacToe():
         return result
 
     def copy(self):
+        """
+        Creates a copy of the current TicTacToe object.
+
+        Parameters:
+            None
+
+        Returns:
+            TicTacToe: A new TicTacToe object with the same board state.
+        """
         return TicTacToe(self.board.copy())
 
     def play(self, position, player) -> int:
@@ -170,13 +188,22 @@ class TicTacToe():
         return True
 
     def play_with_ai(self):
+        """
+        Allows a player to play against the AI. Alternates turns until the game is over (win or draw).
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
 
         print("Welcome to Tic-Tac-Toe against the AI!")
 
         while not self.draw() and self.win() == 0:
             print(self)
             player_move = self.get_player_move()
-            self.play(player_move, -1)  # Assume player is alaways -1
+            self.play(player_move, -1)  # Assume player is always -1
             print(f"\nPlayer move:\n{self}")
 
             if not self.draw() and self.win() == 0:
@@ -194,6 +221,15 @@ class TicTacToe():
             print("The AI wins!")
 
     def get_player_move(self):
+        """
+        Takes input from the player to get their move coordinates.
+
+        Parameters:
+            None
+
+        Returns:
+            Tuple[int, int]: The player's move coordinates (row, column).
+        """
 
         try:
             row = int(input("Enter the row (0, 1, or 2): "))
@@ -208,6 +244,15 @@ class TicTacToe():
             return self.get_player_move()
 
     def get_ai_move(self):
+        """
+        Generates the AI's move using the minimax algorithm with alpha-beta pruning.
+
+        Parameters:
+            None
+
+        Returns:
+            Tuple[int, int]: The AI's move coordinates (row, column).
+        """
         ai = Solver("minimax_alpha_beta")
         root = Node(self, None, None)
 
@@ -222,7 +267,7 @@ class TicTacToe():
         best_move = None
 
         for child in root.children:
-            value = ai.minimax(child, 2, False)
+            value = ai.minimax_alpha_beta(child, 2, -math.inf, math.inf, False)
             if value > best_value:
                 best_value = value
                 best_move = child.last_move
